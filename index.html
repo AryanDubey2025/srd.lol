@@ -1,7 +1,7 @@
 <!-- ================= SRD.EXCHANGE AIRDROP – FULL FRONTEND + BACKEND (NO FRAMEWORK) ================= --><!-- FILE 1: index.html --><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>SRD.Exchange Airdrop</title>
+  <title>Srd.Exchange Airdrop</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <!-- Google reCAPTCHA -->  <script src="https://www.google.com/recaptcha/api.js" async defer></script>  <style>
     body {font-family: Arial, sans-serif;background:#0b1220;color:#fff;margin:0}
     .container {max-width:800px;margin:auto;padding:30px}
@@ -26,7 +26,7 @@
 <div class="task"><span>Trade $10</span><a href="https://srd.exchange" target="_blank"><button>Trade</button></a></div>
 
 <!-- CAPTCHA -->
-<div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
+<div class="g-recaptcha" data-sitekey="6LcdNS4sAAAAAAfUFkIqxzM8v9M-ePsS1FCe_WZo"></div>
 
 <br />
 <button onclick="submitData()">Submit Tasks</button>
@@ -71,7 +71,7 @@ let db = [];
 
 app.post('/submit', async (req,res)=>{ const {wallet, captcha, ref} = req.body;
 
-const secret = 'YOUR_SECRET_KEY'; const verify = await fetch(https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${captcha},{method:'POST'}).then(r=>r.json());
+const secret = '6LcdNS4sAAAAACyP5LsgVPGtw5jwgLljs72ZsuV2'; const verify = await fetch(https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${captcha},{method:'POST'}).then(r=>r.json());
 
 if(!verify.success) return res.json({message:'Captcha failed'});
 
