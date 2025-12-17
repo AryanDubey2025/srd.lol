@@ -1,131 +1,92 @@
-<!DOCTYPE html><html lang="en">
+<!-- ================= SRD.EXCHANGE AIRDROP – FULL FRONTEND + BACKEND (NO FRAMEWORK) ================= --><!-- FILE 1: index.html --><!DOCTYPE html><html lang="en">
 <head>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Srd.Exchange Airdrop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-    .card {
-      background: rgba(255,255,255,0.08);
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-    h1 {
-      text-align: center;
-      font-size: 36px;
-      margin-bottom: 10px;
-    }
-    p.subtitle {
-      text-align: center;
-      opacity: 0.9;
-      margin-bottom: 30px;
-    }
-    .task {
-      background: rgba(0,0,0,0.3);
-      padding: 15px 20px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .task span {
-      font-size: 16px;
-    }
-    .task a, .task button {
-      background: #00e0ff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
-      color: #000;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .task button:disabled {
-      background: #555;
-      cursor: not-allowed;
-    }
-    .reward {
-      text-align: center;
-      margin-top: 30px;
-      font-size: 20px;
-      font-weight: 600;
-      color: #00ff9c;
-    }
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 14px;
-      opacity: 0.7;
-    }
-  </style>
-</head>
+  <title>SRD.Exchange Airdrop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <!-- Google reCAPTCHA -->  <script src="https://www.google.com/recaptcha/api.js" async defer></script>  <style>
+    body {font-family: Arial, sans-serif;background:#0b1220;color:#fff;margin:0}
+    .container {max-width:800px;margin:auto;padding:30px}
+    .logo {text-align:center;margin-bottom:20px}
+    .logo img {max-height:60px}
+    .card {background:#121a2f;padding:25px;border-radius:12px}
+    .task {margin:15px 0;display:flex;justify-content:space-between;align-items:center}
+    input, button {padding:10px;border-radius:6px;border:none}
+    button {background:#00e0ff;font-weight:bold;cursor:pointer}
+  </style></head>
 <body>
-  <div class="container">
-    <div class="card">
-      <h1>🎉 Srd.Exchange Airdrop</h1>
-      <p class="subtitle">Complete tasks & earn <strong>$0.1 USDT instantly</strong></p><!-- Google reCAPTCHA v2 -->
-  <div class="task">
-    <span>🤖 Complete CAPTCHA Verification</span>
-    <div class="g-recaptcha" data-sitekey="6LcdNS4sAAAAAAfUFkIqxzM8v9M-ePsS1FCe_WZo"></div>
+<div class="container">  <div class="logo">
+    <!-- SRD.EXCHANGE LOGO URL -->
+    <img src="LOGO_URL_HERE" />
+  </div>  <div class="card">
+    <h2>SRD.Exchange Airdrop</h2><!-- WALLET ADDRESS -->
+<input id="wallet" placeholder="Enter your wallet address" style="width:100%" />
+
+<!-- TASK LINKS -->
+<div class="task"><span>Join Telegram</span><a href="https://t.me/srdexchange" target="_blank"><button>Open</button></a></div>
+<div class="task"><span>Follow X</span><a href="https://x.com/srdexchange" target="_blank"><button>Open</button></a></div>
+<div class="task"><span>Trade $10</span><a href="https://srd.exchange" target="_blank"><button>Trade</button></a></div>
+
+<!-- CAPTCHA -->
+<div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
+
+<br />
+<button onclick="submitData()">Submit Tasks</button>
+
+<p id="status"></p>
+
+<!-- REFERRAL -->
+<h3>Your Referral Link</h3>
+<input id="refLink" readonly style="width:100%" />
+<button onclick="copyRef()">Copy</button>
+
   </div>
+</div><script>
+const params = new URLSearchParams(window.location.search);
+const ref = params.get('ref') || '';
 
-  <!-- Telegram Task -->
-  <div class="task">
-    <span>📢 Join our Telegram Channel</span>
-    <a href="https://t.me/srdexchange" target="_blank">Join</a>
-  </div>
+function submitData(){
+  const wallet = document.getElementById('wallet').value;
+  const captcha = grecaptcha.getResponse();
+  if(!wallet || !captcha){ alert('Wallet & captcha required'); return; }
 
-  <!-- Twitter Task -->
-  <div class="task">
-    <span>🐦 Follow & Like on X (Twitter)</span>
-    <a href="https://x.com/srdexchange" target="_blank">Open X</a>
-  </div>
+  fetch('/submit',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({wallet, captcha, ref})
+  }).then(r=>r.json()).then(d=>{
+    document.getElementById('status').innerText=d.message;
+    document.getElementById('refLink').value = window.location.origin + '?ref=' + d.userId;
+  });
+}
 
-  <!-- Trading Task -->
-  <div class="task">
-    <span>💱 Complete $10 Trade on SRD.Exchange</span>
-    <a href="https://srd.exchange" target="_blank">Trade Now</a>
-  </div>
+function copyRef(){
+  navigator.clipboard.writeText(document.getElementById('refLink').value);
+  alert('Copied');
+}
+</script></body>
+</html><!-- ================= BACKEND ================= --><!-- FILE 2: server.js (Node.js) -->const express = require('express'); const fetch = require('node-fetch'); const fs = require('fs'); const app = express();
 
-  <!-- Referral -->
-  <div class="task">
-    <span>🔗 Refer a Friend (Earn $0.1 each)</span>
-    <button onclick="copyReferral()">Copy Referral Link</button>
-  </div>
+app.use(express.json()); app.use(express.static('./'));
 
-  <div class="reward">
-    ✅ Reward credited manually after verification in 60min
-  </div>
-</div>
+let db = [];
 
-<footer>
-  © 2025 srd.exchange | Built By Trader, For Traders.
-</footer>
+app.post('/submit', async (req,res)=>{ const {wallet, captcha, ref} = req.body;
 
-  </div>  <script>
-    function verifyCaptcha() {
-      alert('CAPTCHA verified (demo). In production, use Google reCAPTCHA.');
-    }
+const secret = 'YOUR_SECRET_KEY'; const verify = await fetch(https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${captcha},{method:'POST'}).then(r=>r.json());
 
-    function copyReferral() {
-      const link = window.location.href + '?ref=YOUR_ID';
-      navigator.clipboard.writeText(link);
-      alert('Referral link copied!');
-    }
-  </script></body>
-</html>
+if(!verify.success) return res.json({message:'Captcha failed'});
+
+if(db.find(u=>u.wallet===wallet)) return res.json({message:'Already submitted'});
+
+const userId = Date.now().toString();
+
+db.push({ userId, wallet, referredBy: ref, referrals: 0, completed:true });
+
+if(ref){ const parent = db.find(u=>u.userId===ref); if(parent) parent.referrals++; }
+
+fs.writeFileSync('db.json', JSON.stringify(db,null,2));
+
+res.json({message:'Submitted successfully', userId}); });
+
+app.listen(3000,()=>console.log('Server running on 3000'));
+
+<!-- ================= ADMIN DATA ================= --><!-- FILE 3: db.json -->[]
