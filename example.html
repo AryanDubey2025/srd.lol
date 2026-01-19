@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Orderbook Clone Final</title>
+
+<style>
+    body { margin:0; background:#0d1117; font-family:Arial; }
+
+    .box {
+        width:330px;
+        background:#11151d;
+        padding:10px;
+        border-radius:6px;
+        color:#fff;
+        font-size:12px;
+    }
+
+    /* ---------- HEADER ---------- */
+    .top {
+        display:flex;
+        justify-content:space-between;
+        margin-bottom:10px;
+    }
+    .tabs { display:flex; gap:20px; font-size:13px; }
+    .tab { cursor:pointer; opacity:.5; }
+    .tab.active { opacity:1; border-bottom:2px solid #3b82f6; padding-bottom:2px; }
+
+    select {
+        background:#1a1f27;
+        color:white;
+        border:1px solid #222;
+        font-size:11px;
+        padding:4px 10px;
+        border-radius:4px;
+    }
+
+    /* ---------- SELECTOR BUTTONS ---------- */
+    .modes { display:flex; gap:6px; margin:10px 0; }
+
+    .mode-btn {
+        width:28px;
+        height:24px;
+        background:#1a1f27;
+        border:1px solid #222;
+        border-radius:4px;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        opacity:.4;
+    }
+    .mode-btn.active { opacity:1; border-color:#3b82f6; }
+
+    .icon-wrap {
+        display:flex;
+        flex-direction:column;
+        gap:2px;
+    }
+    .bar {
+        height:4px;
+        width:14px;
+        border-radius:2px;
+    }
+    .green { background:#16c784; }
+    .red   { background:#ea3943; }
+
+    /* ---------- TABLE ---------- */
+    table { width:100%; border-collapse:collapse; }
+    th { color:#9ca3af; text-align:left; padding-bottom:6px; font-size:11px; }
+    td { padding:3px 0; }
+
+    .sell { color:#f87171; }
+    .buy  { color:#4ade80; }
+
+    .row { position:relative; }
+
+    .bar-sell {
+        position:absolute;
+        right:0; top:0; bottom:0;
+        background:rgba(255,40,40,0.32);
+        z-index:-1;
+    }
+
+    .bar-buy {
+        position:absolute;
+        left:0; top:0; bottom:0;
+        background:rgba(0,200,80,0.32);
+        z-index:-1;
+    }
+
+    .mid {
+        margin:10px 0;
+        text-align:center;
+        font-size:15px;
+        font-weight:bold;
+        color:#ea3943;
+    }
+
+    .trades { display:none; }
+    .time { text-align:right; color:#ccc; }
+</style>
+
+<script>
+    function switchTab(t) {
+        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+
+        const showOrder = t.innerText === "Order Book";
+
+        document.querySelector('.orderbook').style.display = showOrder ? "block" : "none";
+        document.querySelector('.trades').style.display = showOrder ? "none" : "block";
+
+        // HIDE SELECTOR ICONS ONLY IN TRADES TAB
+        document.getElementById("modesBox").style.display = showOrder ? "flex" : "none";
+    }
+
+    function mode(type) {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('#' + type).classList.add('active');
+
+        if(type === "both") {
+            document.querySelectorAll(".sell-row").forEach(r => r.style.display = "");
+            document.querySelectorAll(".buy-row").forEach(r => r.style.display = "");
+        }
+        else if(type === "buy") {
+            document.querySelectorAll(".sell-row").forEach(r => r.style.display = "none");
+            document.querySelectorAll(".buy-row").forEach(r => r.style.display = "");
+        }
+        else if(type === "sell") {
+            document.querySelectorAll(".buy-row").forEach(r => r.style.display = "none");
+            document.querySelectorAll(".sell-row").forEach(r => r.style.display = "");
+        }
+    }
+</script>
+</head>
+<body>
+
+<div class="box">
+
+    <!-- TOP TABS -->
+    <div class="top">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab(this)">Order Book</div>
+            <div class="tab" onclick="switchTab(this)">Trades</div>
+        </div>
+        <select><option>0.001</option></select>
+    </div>
+
+    <!-- SELECTOR ICONS ONLY IN ORDER BOOK -->
+    <div class="modes" id="modesBox">
+
+        <!-- BOTH -->
+        <div class="mode-btn active" id="both" onclick="mode('both')">
+            <div class="icon-wrap">
+                <div class="bar green"></div>
+                <div class="bar red"></div>
+            </div>
+        </div>
+
+        <!-- BUY ONLY -->
+        <div class="mode-btn" id="buy" onclick="mode('buy')">
+            <div class="icon-wrap">
+                <div class="bar green"></div>
+                <div class="bar green"></div>
+            </div>
+        </div>
+
+        <!-- SELL ONLY -->
+        <div class="mode-btn" id="sell" onclick="mode('sell')">
+            <div class="icon-wrap">
+                <div class="bar red"></div>
+                <div class="bar red"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ORDER BOOK -->
+    <div class="orderbook">
+        <table>
+            <tr><th>Price</th><th>Quantity(USDT)</th><th>Total(USDT)</th></tr>
+
+            <!-- SELL ROWS -->
+            <tr class="row sell-row">
+                <td class="sell">38.145</td><td>2.25K</td><td>44.05K</td>
+                <div class="bar-sell" style="width:60%;"></div>
+            </tr>
+
+            <tr class="row sell-row">
+                <td class="sell">38.136</td><td>6.21K</td><td>41.79K</td>
+                <div class="bar-sell" style="width:50%;"></div>
+            </tr>
+
+            <tr class="row sell-row">
+                <td class="sell">38.131</td><td>6.99K</td><td>35.58K</td>
+                <div class="bar-sell" style="width:40%;"></div>
+            </tr>
+        </table>
+
+        <div class="mid">38.080 ↓</div>
+
+        <table>
+            <!-- BUY ROWS -->
+            <tr class="row buy-row">
+                <td class="buy">38.078</td><td>7.615</td><td>7.615</td>
+                <div class="bar-buy" style="width:35%;"></div>
+            </tr>
+
+            <tr class="row buy-row">
+                <td class="buy">38.076</td><td>7.69K</td><td>7.70K</td>
+                <div class="bar-buy" style="width:50%;"></div>
+            </tr>
+
+            <tr class="row buy-row">
+                <td class="buy">38.071</td><td>7.614</td><td>7.71K</td>
+                <div class="bar-buy" style="width:42%;"></div>
+            </tr>
+        </table>
+    </div>
+
+    <!-- TRADES TAB -->
+    <div class="trades">
+        <table>
+            <tr><th>Price</th><th>Quantity(USDT)</th><th>Time</th></tr>
+            <tr><td class="buy">38.655</td><td>7.731</td><td class="time">19:32:13</td></tr>
+            <tr><td class="buy">38.676</td><td>7.735</td><td class="time">19:24:31</td></tr>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

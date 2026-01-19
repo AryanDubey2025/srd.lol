@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign In - SRD Exchange</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a0a2e 50%, #0a0e1a 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(76, 201, 240, 0.08) 0%, transparent 50%);
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -30px); }
+}
+
+.card {
+    width: 420px;
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(20px);
+    padding: 40px 32px;
+    border-radius: 20px;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 1;
+    animation: slideUp 0.5s ease-out;
+}
+
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.top-text {
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 28px;
+    padding: 0 5px;
+}
+
+h2 {
+    margin-bottom: 28px;
+    font-size: 26px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.btn-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.sbtn {
+    flex: 1;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background: rgba(31, 41, 55, 0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.sbtn:hover {
+    background: rgba(31, 41, 55, 0.8);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.sbtn:active {
+    transform: translateY(0);
+}
+
+.sbtn i {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.sbtn.google:hover { border-color: rgba(234, 67, 53, 0.4); }
+.sbtn.facebook:hover { border-color: rgba(24, 119, 242, 0.4); }
+.sbtn.twitter:hover { border-color: rgba(255, 255, 255, 0.3); }
+.sbtn.linkedin:hover { border-color: rgba(10, 102, 194, 0.4); }
+
+.input {
+    width: 100%;
+    margin-top: 14px;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(31, 41, 55, 0.5);
+    color: #fff;
+    padding: 0 16px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.input:focus {
+    outline: none;
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(31, 41, 55, 0.7);
+}
+
+.input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.phone-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.country-wrapper {
+    position: relative;
+    width: 32%;
+}
+
+.country {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(31, 41, 55, 0.5);
+    color: #fff;
+    padding: 0 30px 0 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.country:focus {
+    outline: none;
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(31, 41, 55, 0.7);
+}
+
+.country-wrapper::after {
+    content: '\f078';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    font-size: 12px;
+}
+
+.country option {
+    background: #1f2937;
+    color: #fff;
+    padding: 10px;
+}
+
+.phone-input {
+    flex: 1;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(31, 41, 55, 0.5);
+    color: #fff;
+    padding: 0 16px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.phone-input:focus {
+    outline: none;
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(31, 41, 55, 0.7);
+}
+
+.phone-input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.or {
+    margin: 22px 0;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 13px;
+    position: relative;
+    text-align: center;
+}
+
+.or::before,
+.or::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 43%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.or::before { left: 0; }
+.or::after { right: 0; }
+
+.wallet-btn {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    background: rgba(139, 92, 246, 0.1);
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.wallet-btn:hover {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.4);
+    transform: translateY(-1px);
+}
+
+.wallet-btn:active {
+    transform: translateY(0);
+}
+
+.wallet-btn span:first-child {
+    font-weight: 500;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.wallet-btn span:last-child {
+    background: rgba(139, 92, 246, 0.25);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.footer {
+    margin-top: 24px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 13px;
+    text-align: center;
+}
+
+.footer a {
+    color: rgba(139, 92, 246, 0.9);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer a:hover {
+    color: rgba(139, 92, 246, 1);
+}
+
+.bottom-note {
+    margin-top: 18px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    line-height: 18px;
+    text-align: center;
+}
+
+.bottom-note a {
+    color: #60a5fa;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.bottom-note a:hover {
+    color: #93c5fd;
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 90%;
+        padding: 32px 24px;
+    }
+    
+    .btn-row {
+        gap: 8px;
+    }
+    
+    .sbtn {
+        height: 46px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+    <button class="close-btn" onclick="window.close()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <div class="logo">
+        <img src="logo.svg" alt="SRD Logo">
+    </div>
+
+    <div class="top-text">
+        Securely Link Your Wallet to start Trading Instantly - Welcome to DeFi World.
+    </div>
+
+    <h2>Sign in</h2>
+
+    <div class="btn-row">
+        <div class="sbtn google"><i class="fab fa-google"></i></div>
+        <div class="sbtn facebook"><i class="fab fa-facebook-f"></i></div>
+        <div class="sbtn twitter"><i class="fab fa-x-twitter"></i></div>
+        <div class="sbtn linkedin"><i class="fab fa-linkedin-in"></i></div>
+    </div>
+
+    <input class="input" type="email" placeholder="Email" />
+
+    <div class="phone-row">
+        <div class="country-wrapper">
+            <select class="country">
+                <option value="+91">🇮🇳 +91</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+61">🇦🇺 +61</option>
+                <option value="+971">🇦🇪 +971</option>
+            </select>
+        </div>
+        <input class="phone-input" type="tel" placeholder="Phone Number" />
+    </div>
+
+    <div class="or">OR</div>
+
+    <div class="wallet-btn">
+        <span>All Wallets</span>
+        <span>417</span>
+    </div>
+
+    <div class="footer">Powered by <a href="https://srd.exchange" target="_blank">SRD.exchange</a></div>
+
+    <div class="bottom-note">
+        By connecting a wallet, you agree to SRD's 
+        <a href="https://srd.exchange/terms-and-conditions" target="_blank">Terms of Service</a>
+        and consent to its Privacy Policy.
+    </div>
+
+</div>
+</body>
+</html>
